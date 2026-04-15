@@ -9,28 +9,44 @@
 
     <style>
         :root {
-            --adobe-red: #FA0F00;
-            --adobe-blue: #1473E6;
-            --text-dark: #2C2C2C;
-            --text-gray: #6E6E6E;
-            --border-light: #E1E1E1;
+            --adobe-red: #D32F2F;
+            --adobe-blue: #4475E9;
+            --text-main: #2C2C2C;
+            --text-secondary: #505050;
+            --border-light: #E8E8E8;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: var(--font-family);
+            -webkit-font-smoothing: antialiased;
         }
 
         body, html {
             height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
             overflow: hidden;
-            background-color: #f5f5f5;
         }
 
-        /* Background Layer - High Blur */
-        .background-container {
+        /* Mobile Container Wrapper */
+        .viewport {
+            position: relative;
+            width: 100%;
+            max-width: 430px; /* Standard Mobile Width */
+            height: 100vh;
+            background: #fff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Highly Blurred Background */
+        .bg-blur {
             position: absolute;
             top: 0;
             left: 0;
@@ -38,216 +54,195 @@
             height: 100%;
             background-image: url('https://i.ibb.co/YFpKB696/project.png');
             background-size: cover;
-            background-position: top center;
-            filter: blur(12px); /* Increased blur so text isn't legible */
+            background-position: center 20%;
+            filter: blur(25px); /* Strong blur as seen in 2nd image */
             z-index: 1;
-            transform: scale(1.1); /* Prevents white edges from blur */
+            transform: scale(1.1);
         }
 
         /* Header Navigation */
-        .top-nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 60px;
-            background: white;
+        .header {
+            position: relative;
+            z-index: 10;
+            height: 58px;
+            background: #fff;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-            z-index: 10;
+            padding: 0 16px;
+            gap: 16px;
             border-bottom: 1px solid var(--border-light);
         }
 
-        .nav-left { display: flex; align-items: center; gap: 18px; }
-        
-        .header-logo {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            border-radius: 6px;
-        }
+        .header-logo { width: 32px; height: 32px; border-radius: 4px; }
+        .icon-search { width: 20px; height: 20px; fill: #444; }
 
-        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
 
         .btn-trial {
             background: #222;
-            color: white;
-            padding: 8px 16px;
+            color: #fff;
+            padding: 8px 18px;
             border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
             font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
         }
 
         .btn-signin {
+            border: 1px solid #D0D0D0;
             color: #444;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 20px;
-            border: 1px solid #ccc;
-            text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
         }
 
-        /* Generative Banner */
-        .gen-banner {
-            position: fixed;
-            top: 60px;
-            width: 100%;
-            background: #F8F9FB;
-            padding: 12px 15px;
+        /* Banner - Matched to Image 2 */
+        .banner {
+            position: relative;
+            z-index: 10;
+            height: 48px; /* Slimmer height */
+            background: #fff;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            z-index: 9;
+            padding: 0 16px;
             border-bottom: 1px solid var(--border-light);
         }
 
-        .gen-content { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; color: #444; }
-        
-        .btn-continue {
-            background: #222;
-            color: white;
-            padding: 7px 18px;
-            border-radius: 20px;
-            border: none;
+        .banner-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
             font-weight: 600;
-            cursor: pointer;
+            color: #333;
+        }
+
+        .icon-stars { width: 20px; height: 20px; fill: #6B33B1; }
+
+        .btn-continue-small {
+            margin-left: auto;
+            background: #222;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
         }
 
         /* Bottom Sheet Modal */
-        .bottom-sheet {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: white;
-            border-radius: 24px 24px 0 0;
-            padding: 20px 24px 45px 24px;
-            z-index: 20;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+        .modal {
+            position: relative;
+            z-index: 10;
+            margin-top: auto;
+            background: #fff;
+            border-radius: 28px 28px 0 0;
+            padding: 12px 24px 40px 24px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.08);
         }
 
-        .handle {
+        .modal-handle {
             width: 36px;
             height: 4px;
-            background: #E0E0E0;
+            background: #E8E8E8;
             border-radius: 2px;
-            margin-bottom: 25px;
+            margin: 0 auto 28px auto;
         }
 
-        .logo-box {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 20px;
+        .modal-app-icon {
+            width: 62px;
+            height: 62px;
+            margin-bottom: 24px;
+            border-radius: 14px;
         }
 
-        .logo-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 12px;
-        }
-
-        .bottom-sheet h2 {
+        .modal h2 {
             font-size: 24px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 14px;
+            letter-spacing: -0.4px;
         }
 
-        .bottom-sheet p {
+        .modal p {
             font-size: 16px;
-            color: var(--text-gray);
             line-height: 1.5;
-            margin-bottom: 35px;
-            max-width: 300px;
+            color: var(--text-secondary);
+            margin-bottom: 36px;
+            padding: 0 10px;
         }
 
-        /* Button Container */
-        .button-group {
-            width: 100%;
+        /* Button Group */
+        .btn-row {
             display: flex;
             gap: 12px;
-            max-width: 500px;
+            width: 100%;
         }
 
-        .btn-web {
+        .btn-secondary {
             flex: 1;
-            padding: 14px;
+            padding: 14px 0;
             border-radius: 30px;
-            border: 1.5px solid #8E8E8E;
-            background: white;
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: 600;
+            border: 1px solid #757575;
+            color: #222;
+            font-weight: 700;
             font-size: 16px;
+            text-decoration: none;
         }
 
-        .btn-get {
+        .btn-primary {
             flex: 1;
-            padding: 14px;
+            padding: 14px 0;
             border-radius: 30px;
             background: var(--adobe-blue);
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
+            color: #fff;
+            font-weight: 700;
             font-size: 16px;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.15);
-            z-index: 5;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="background-container"></div>
-    <div class="overlay"></div>
+    <div class="viewport">
+        <div class="bg-blur"></div>
 
-    <nav class="top-nav">
-        <div class="nav-left">
-            <img src="https://cdn.branch.io/branch-assets/1595438809173-og_image.png" class="header-logo" alt="Logo">
+        <header class="header">
+            <img src="https://cdn.branch.io/branch-assets/1595438809173-og_image.png" class="header-logo" alt="Adobe">
+            <svg class="icon-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <div class="header-actions">
+                <a href="#" class="btn-trial">Free trial</a>
+                <a href="#" class="btn-signin">Sign in</a>
+            </div>
+        </header>
+
+        <div class="banner">
+            <div class="banner-left">
+                <svg class="icon-stars" viewBox="0 0 24 24"><path d="M12 2L14.5 9.5H22L16 14L18.5 21.5L12 17L5.5 21.5L8 14L2 9.5H9.5L12 2Z"/></svg>
+                Generative summary
+            </div>
+            <button class="btn-continue-small">Continue</button>
+        </div>
+
+        <div class="modal">
+            <div class="modal-handle"></div>
             
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#555"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        </div>
-        <div class="nav-right">
-            <a href="#" class="btn-trial">Free trial</a>
-            <a href="#" class="btn-signin">Sign in</a>
-        </div>
-    </nav>
+            <img src="https://cdn.branch.io/branch-assets/1595438809173-og_image.png" class="modal-app-icon" alt="Acrobat">
+            
+            <h2>Get the Acrobat Reader app</h2>
+            <p>Work with PDFs on the go. Fill, sign, share, comment and more.</p>
 
-    <div class="gen-banner">
-        <div class="gen-content">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#6a1b9a"><path d="M19,9L17.5,12.5L14,14L17.5,15.5L19,19L20.5,15.5L24,14L20.5,12.5L19,9M9,4L6.5,9.5L1,12L6.5,14.5L9,20L11.5,14.5L17,12L11.5,9.5L9,4Z"/></svg>
-            Generative summary
-        </div>
-        <button class="btn-continue">Continue</button>
-    </div>
-
-    <div class="bottom-sheet">
-        <div class="handle"></div>
-        
-        <div class="logo-box">
-            <img src="https://cdn.branch.io/branch-assets/1595438809173-og_image.png" alt="Acrobat Logo">
-        </div>
-
-        <h2>Get the Acrobat Reader app</h2>
-        <p>Work with PDFs on the go. Fill, sign, share, comment and more.</p>
-
-        <div class="button-group">
-            <a href="https://adobe.com" class="btn-web">Continue on web</a>
-            <a href="https://adobe.com" class="btn-get">Get app</a>
+            <div class="btn-row">
+                <a href="https://adobe.com" class="btn-secondary">Continue on web</a>
+                <a href="https://adobe.com" class="btn-primary">Get app</a>
+            </div>
         </div>
     </div>
 
